@@ -1,0 +1,15 @@
+{
+    "id": "51c5cebe-b8e4-48ae-89d3-2b7746019cc4",
+    "version": "0.0.1",
+    "requiredApiVersion": "^1.4.0",
+    "iconFile": "icon.png",
+    "author": {
+        "name": "Ilhasoft",
+        "homepage": "https://github.com/Ilhasoft/",
+        "support": "https://github.com/Ilhasoft/"
+    },
+    "name": "RapidPro Integration",
+    "nameSlug": "rapidprointegration",
+    "classFile": "RapidProIntegrationApp.ts",
+    "description": "Integration between RapidPro and Rocket.Chat"
+}
