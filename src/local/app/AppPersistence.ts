@@ -6,10 +6,12 @@ import PersistenceUtils from '../../utils/PersistenceUtils';
 
 export default class AppPersistence implements IAppDataSource {
 
-    private static readonly ASSOC_CALLBACK_URL = new RocketChatAssociationRecord(
-        RocketChatAssociationModel.MISC,
-        'AppPersistence_callback_url',
-    );
+    private static ASSOC_CALLBACK_URL(botUsername: string): RocketChatAssociationRecord {
+        return new RocketChatAssociationRecord(
+            RocketChatAssociationModel.MISC,
+            'AppPersistence_callback_url_' + botUsername,
+        );
+    }
 
     private persisUtils: PersistenceUtils;
 
@@ -17,12 +19,12 @@ export default class AppPersistence implements IAppDataSource {
         this.persisUtils = new PersistenceUtils(reader, writer);
     }
 
-    public async getCallbackUrl(): Promise<string | undefined> {
-        return this.persisUtils.readValue(AppPersistence.ASSOC_CALLBACK_URL);
+    public async getCallbackUrl(botUsername: string): Promise<string | undefined> {
+        return this.persisUtils.readValue(AppPersistence.ASSOC_CALLBACK_URL(botUsername));
     }
 
-    public async setCallbackUrl(url: string): Promise<void> {
-        await this.persisUtils.writeValue(url, AppPersistence.ASSOC_CALLBACK_URL);
+    public async setCallbackUrl(url: string, botUsername: string): Promise<void> {
+        await this.persisUtils.writeValue(url, AppPersistence.ASSOC_CALLBACK_URL(botUsername));
     }
 
 }

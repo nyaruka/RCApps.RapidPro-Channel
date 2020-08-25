@@ -1,11 +1,7 @@
 export default interface IAppDataSource {
 
-    getCallbackUrl(): Promise<string | undefined>;
+    getCallbackUrl(botUsername: string): Promise<string | undefined>;
 
-    setCallbackUrl(url: string): Promise<void>;
-
-    // getRPHostUrl(): Promise<string | undefined>;
-
-    // setRPHostUrl(host: string): Promise<void>;
+    setCallbackUrl(url: string, botUsername: string): Promise<void>;
 
 }
