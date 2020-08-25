@@ -85,9 +85,6 @@ export class SettingsEndpoint extends ApiEndpoint {
             await InstanceHelper.newDefaultRocketRemoteDataSource(http, read),
         );
 
-        console.log('callbackUrl: ', callbackUrl);
-        console.log('bot: ', bot);
-
         await rocketRepo.createBot(bot as IBotUser);
 
         return this.json({status: HttpStatusCode.NO_CONTENT});
