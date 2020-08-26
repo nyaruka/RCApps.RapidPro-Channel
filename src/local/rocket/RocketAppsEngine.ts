@@ -1,10 +1,12 @@
 import { HttpStatusCode, IModify, IRead } from '@rocket.chat/apps-engine/definition/accessors';
 import { IVisitor } from '@rocket.chat/apps-engine/definition/livechat';
+import { IMessageAttachment } from '@rocket.chat/apps-engine/definition/messages';
 import { IRoom, RoomType } from '@rocket.chat/apps-engine/definition/rooms';
 import { IUser } from '@rocket.chat/apps-engine/definition/users';
 
 import IRocketInternalDataSource from '../../data/rocket/IRocketInternalDataSource';
 import AppError from '../../domain/AppError';
+import IAttachment from '../../domain/Attachment';
 
 export default class RocketAppsEngine implements IRocketInternalDataSource {
 
@@ -21,7 +23,7 @@ export default class RocketAppsEngine implements IRocketInternalDataSource {
         return await this.read.getLivechatReader().getLivechatVisitorByToken(token);
     }
 
-    public async sendLivechatMessage(botAgent: IUser, visitor: IVisitor, text?: string, attachments?: Array<string>): Promise<string> {
+    public async sendLivechatMessage(botAgent: IUser, visitor: IVisitor, text?: string): Promise<string> {
 
         const rooms = await this.read.getLivechatReader().getLivechatRooms(visitor);
         if (!rooms) {
@@ -34,13 +36,11 @@ export default class RocketAppsEngine implements IRocketInternalDataSource {
             .setSender(botAgent);
 
         text && livechatMessageBuilder.setText(text);
-        // TODO: handle attachments
-        // attachments && livechatMessageBuilder.setAttachments(attachments);
 
         return await this.modify.getCreator().finish(livechatMessageBuilder);
     }
 
-    public async sendMessage(bot: IUser, userUsername: string, text?: string, attachments?: Array<string>): Promise<string> {
+    public async sendMessage(bot: IUser, userUsername: string, text?: string, attachments?: Array<IAttachment>): Promise<string> {
 
         let room: IRoom | undefined = await this.read.getRoomReader().getDirectByUsernames([bot.username, userUsername]);
 
@@ -60,8 +60,24 @@ export default class RocketAppsEngine implements IRocketInternalDataSource {
             .setRoom(room!)
             .setSender(bot);
         text && messageBuilder.setText(text);
-        // TODO: handle attachments
-        // attachments && messageBuilder.setAttachments(attachments)
+
+        if (attachments) {
+            const messageAttachments: Array<IMessageAttachment> = [];
+            attachments.map((attachment) => {
+                switch (attachment.type) {
+                    case 'image':
+                        messageAttachments.push({ imageUrl: attachment.url });
+                        break;
+                    case 'audio':
+                        messageAttachments.push({ audioUrl: attachment.url });
+                        break;
+                    case 'video':
+                        messageAttachments.push({ videoUrl: attachment.url });
+                        break;
+                }
+            });
+            messageBuilder.setAttachments(messageAttachments);
+        }
 
         return await this.modify.getCreator().finish(messageBuilder);
     }
