@@ -1,9 +1,5 @@
-import { IUser } from '@rocket.chat/apps-engine/definition/users';
-
-import IBotUser from '../../domain/BotUser';
-
 export default interface IRocketRepository {
 
-    createBot(bot: IBotUser): Promise<string>;
+    sendMessage(user: string, bot: string, text?: string, attachments?: Array<string>): Promise<string>;
 
 }
