@@ -3,12 +3,9 @@ import { ApiEndpoint, IApiEndpointInfo, IApiRequest } from '@rocket.chat/apps-en
 import { IApiResponseJSON } from '@rocket.chat/apps-engine/definition/api/IResponse';
 
 import IAppDataSource from '../data/app/IAppDataSource';
-import RocketRepositoryImpl from '../data/rocket/RocketRepositoryImpl';
-import IBotUser from '../domain/BotUser';
 import AppPersistence from '../local/app/AppPersistence';
 import RequestBodyValidator from '../utils/RequestBodyValidator';
 import RequestHeadersValidator from '../utils/RequestHeadersValidator';
-import InstanceHelper from './helpers/InstanceHelper';
 
 export class SettingsEndpoint extends ApiEndpoint {
 
@@ -32,26 +29,7 @@ export class SettingsEndpoint extends ApiEndpoint {
                 allowEmpty: false,
             },
         },
-        'bot.name': {
-            presence: {
-                allowEmpty: false,
-            },
-            type: 'string',
-        },
         'bot.username': {
-            presence: {
-                allowEmpty: false,
-            },
-            type: 'string',
-        },
-        'bot.email': {
-            presence: {
-                allowEmpty: false,
-            },
-            type: 'string',
-            email: true,
-        },
-        'bot.password': {
             presence: {
                 allowEmpty: false,
             },
@@ -74,18 +52,8 @@ export class SettingsEndpoint extends ApiEndpoint {
         await RequestBodyValidator.validate(this.bodyConstraints, request.content);
 
         // salva a url de callback do rapidpro na persistencia
-        const callbackUrl = request.content.webhook.url;
-        const bot = request.content.bot;
         const appDataSource: IAppDataSource = new AppPersistence(read.getPersistenceReader(), persis);
-
-        await appDataSource.setCallbackUrl(callbackUrl);
-
-        // cria um novo bot com as configs recebidas
-        const rocketRepo = new RocketRepositoryImpl(
-            await InstanceHelper.newDefaultRocketRemoteDataSource(http, read),
-        );
-
-        await rocketRepo.createBot(bot as IBotUser);
+        await appDataSource.setCallbackUrl(request.content.webhook.url, request.content.bot.username);
 
         return this.json({status: HttpStatusCode.NO_CONTENT});
     }
