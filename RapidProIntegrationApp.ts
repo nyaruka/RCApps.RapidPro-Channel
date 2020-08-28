@@ -9,6 +9,7 @@ import { App } from '@rocket.chat/apps-engine/definition/App';
 import { IAppInfo } from '@rocket.chat/apps-engine/definition/metadata';
 
 import { CheckSecretEndpoint } from './src/endpoint/CheckSecretEndpoint';
+import { MessageEndpoint } from './src/endpoint/MessageEndpoint';
 import { SettingsEndpoint } from './src/endpoint/SettingsEndpoint';
 import { APP_SETTINGS } from './src/settings/Constants';
 
@@ -25,6 +26,7 @@ export class RapidProIntegrationApp extends App {
             endpoints: [
                 new CheckSecretEndpoint(this),
                 new SettingsEndpoint(this),
+                new MessageEndpoint(this),
             ],
         } as IApi);
     }
