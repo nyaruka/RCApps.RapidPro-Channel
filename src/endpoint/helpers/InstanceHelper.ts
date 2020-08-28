@@ -1,12 +1,12 @@
 import { IModify, IRead } from '@rocket.chat/apps-engine/definition/accessors';
 
-import IRocketInternalDataSource from '../../data/rocket/IRocketInternalDataSource';
-import RocketAppsEngine from '../../local/rocket/RocketAppsEngine';
+import IChatInternalDataSource from '../../data/rocket/IChatInternalDataSource';
+import ChatAppsEngine from '../../local/rocket/ChatAppsEngine';
 
 export default class InstanceHelper {
 
-    public static async newDefaultRocketInternalDataSource(read: IRead, modify: IModify): Promise<IRocketInternalDataSource> {
-        return new RocketAppsEngine(read, modify);
+    public static async newDefaultRocketInternalDataSource(read: IRead, modify: IModify): Promise<IChatInternalDataSource> {
+        return new ChatAppsEngine(read, modify);
     }
 
 }

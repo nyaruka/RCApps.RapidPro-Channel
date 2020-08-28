@@ -4,11 +4,11 @@ import { IMessageAttachment } from '@rocket.chat/apps-engine/definition/messages
 import { IRoom, RoomType } from '@rocket.chat/apps-engine/definition/rooms';
 import { IUser } from '@rocket.chat/apps-engine/definition/users';
 
-import IRocketInternalDataSource from '../../data/rocket/IRocketInternalDataSource';
+import IChatInternalDataSource from '../../data/rocket/IChatInternalDataSource';
 import AppError from '../../domain/AppError';
 import IAttachment from '../../domain/Attachment';
 
-export default class RocketAppsEngine implements IRocketInternalDataSource {
+export default class ChatAppsEngine implements IChatInternalDataSource {
 
     constructor(
         private readonly read: IRead,

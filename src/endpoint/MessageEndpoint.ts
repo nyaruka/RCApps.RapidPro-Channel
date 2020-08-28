@@ -2,7 +2,7 @@ import { HttpStatusCode, IHttp, IModify, IPersistence, IRead } from '@rocket.cha
 import { ApiEndpoint, IApiEndpointInfo, IApiRequest } from '@rocket.chat/apps-engine/definition/api';
 import { IApiResponseJSON } from '@rocket.chat/apps-engine/definition/api/IResponse';
 
-import RocketRepositoryImpl from '../data/rocket/RocketRepositoryImpl';
+import ChatRepositoryImpl from '../data/rocket/ChatRepositoryImpl';
 import RequestBodyValidator from '../utils/RequestBodyValidator';
 import RequestHeadersValidator from '../utils/RequestHeadersValidator';
 import InstanceHelper from './helpers/InstanceHelper';
@@ -47,7 +47,7 @@ export class MessageEndpoint extends ApiEndpoint {
         await RequestHeadersValidator.validate(read, request.headers);
         await RequestBodyValidator.validate(this.bodyConstraints, request.content);
 
-        const rocketRepo = new RocketRepositoryImpl(
+        const rocketRepo = new ChatRepositoryImpl(
             await InstanceHelper.newDefaultRocketInternalDataSource(read, modify),
         );
 
