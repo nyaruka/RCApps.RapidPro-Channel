@@ -1,14 +1,19 @@
 import { HttpStatusCode } from '@rocket.chat/apps-engine/definition/accessors';
+import { IMessageAttachment } from '@rocket.chat/apps-engine/definition/messages';
 
 import AppError from '../../domain/AppError';
 import IAttachment from '../../domain/Attachment';
+import IAppDataSource from '../app/IAppDataSource';
 import IChatInternalDataSource from './IChatInternalDataSource';
 import IChatRepository from './IChatRepository';
+import IChatWebhook from './IChatWebhook';
 
 export default class ChatRepositoryImpl implements IChatRepository {
 
     constructor(
         private readonly internalDataSource: IChatInternalDataSource,
+        private readonly chatWebhook: IChatWebhook,
+        private readonly appPersis: IAppDataSource,
     ) { }
 
     public async sendMessage(userUrn: string, botUsername: string, text?: string, attachments?: Array<IAttachment>): Promise<string> {
@@ -38,6 +43,19 @@ export default class ChatRepositoryImpl implements IChatRepository {
         } else {
             throw new AppError(`Invalid room type: ${type}`, HttpStatusCode.BAD_REQUEST);
         }
+    }
+
+    public async onDirectMessage(userUsername: string, botUsername: string, message?: string, attachments?: Array<IMessageAttachment>): Promise<void> {
+
+        // valida que o bot é um bot válido
+        const callbackUrl = await this.appPersis.getCallbackUrl(botUsername);
+        if (!callbackUrl) {
+            return;
+        }
+        await this.chatWebhook.onDirectMessage(callbackUrl, userUsername, message, attachments);
+    }
+    public async onLivechatMessage(visitorToken: string, botUsername: string, message?: string, attachments?: Array<IMessageAttachment>): Promise<void> {
+        throw new Error('Method not implemented.');
     }
 
 }

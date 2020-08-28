@@ -1,12 +1,24 @@
-import { IModify, IRead } from '@rocket.chat/apps-engine/definition/accessors';
+import { IHttp, IModify, IPersistence, IPersistenceRead, IRead } from '@rocket.chat/apps-engine/definition/accessors';
 
-import IChatInternalDataSource from '../../data/rocket/IChatInternalDataSource';
-import ChatAppsEngine from '../../local/rocket/ChatAppsEngine';
+import IAppDataSource from '../../data/app/IAppDataSource';
+import IChatInternalDataSource from '../../data/chat/IChatInternalDataSource';
+import IChatWebhook from '../../data/chat/IChatWebhook';
+import AppPersistence from '../../local/app/AppPersistence';
+import ChatAppsEngine from '../../local/chat/ChatAppsEngine';
+import ChatWebhook from '../../remote/chat/ChatWebhook';
 
 export default class InstanceHelper {
 
-    public static async newDefaultRocketInternalDataSource(read: IRead, modify: IModify): Promise<IChatInternalDataSource> {
+    public static async newDefaultChatInternalDataSource(read: IRead, modify: IModify): Promise<IChatInternalDataSource> {
         return new ChatAppsEngine(read, modify);
+    }
+
+    public static async newDefaultChatWebhook(http: IHttp, read: IRead, persistence: IPersistence): Promise<IChatWebhook> {
+        return new ChatWebhook(read, http, persistence, '');
+    }
+
+    public static async newDefaultAppPersistence(read: IPersistenceRead, persis: IPersistence): Promise<IAppDataSource> {
+        return new AppPersistence(read, persis);
     }
 
 }
