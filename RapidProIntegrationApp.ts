@@ -50,7 +50,10 @@ export class RapidProIntegrationApp extends App implements IPostMessageSent {
         persistence: IPersistence,
         modify: IModify,
     ): Promise<void> {
-        // check if current room is a livechat one
+        // Do not foward any message that a bot has sent
+        if (message.sender.roles && message.sender.roles.includes('bot')) {
+            return;
+        }
 
         const chatRepo = new ChatRepositoryImpl(
             await InstanceHelper.newDefaultChatInternalDataSource(read, modify),
@@ -59,7 +62,7 @@ export class RapidProIntegrationApp extends App implements IPostMessageSent {
         );
 
         if (message.room.type === RoomType.LIVE_CHAT) {
-            return;
+            await chatRepo.onLivechatMessage(message.room['visitor'].token, message.room['servedBy'].username, message.text);
         } else if (message.room.type === RoomType.DIRECT_MESSAGE) {
             // since this is a direct chat, there's always only two users, then we remove the sender and get the other one to check if is a valid bot
             const directUsers = message.room['_unmappedProperties_'].usernames;

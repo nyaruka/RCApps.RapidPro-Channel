@@ -15,7 +15,6 @@ export default class ChatWebhook implements IChatWebhook {
     ) { }
 
     public async onDirectMessage(callbackUrl: string, userUsername: string, message?: string, attachments?: Array<IMessageAttachment>): Promise<void> {
-
         const payload = {
             user: `direct:${userUsername}`,
         };
@@ -27,11 +26,19 @@ export default class ChatWebhook implements IChatWebhook {
         reqOptions['data'] = payload;
 
         await this.http.post(callbackUrl, reqOptions);
-
     }
 
-    public async onLivechatMessage(callbackUrl: string, visitorToken: string, message?: string, attachments?: Array<IMessageAttachment>): Promise<void> {
-        throw new Error('Method not implemented.');
+    public async onLivechatMessage(callbackUrl: string, visitorToken: string, message?: string): Promise<void> {
+        const payload = {
+            user: `livechat:${visitorToken}`,
+        };
+
+        message && (payload['text'] = message);
+
+        const reqOptions = this.requestOptions();
+        reqOptions['data'] = payload;
+
+        await this.http.post(callbackUrl, reqOptions);
     }
 
     private async getAttachments(attachments: Array< IMessageAttachment>): Promise<any> {

@@ -46,16 +46,26 @@ export default class ChatRepositoryImpl implements IChatRepository {
     }
 
     public async onDirectMessage(userUsername: string, botUsername: string, message?: string, attachments?: Array<IMessageAttachment>): Promise<void> {
-
         // valida que o bot é um bot válido
-        const callbackUrl = await this.appPersis.getCallbackUrl(botUsername);
+        const callbackUrl = await this.getBotCallback(botUsername);
         if (!callbackUrl) {
             return;
         }
+
         await this.chatWebhook.onDirectMessage(callbackUrl, userUsername, message, attachments);
     }
-    public async onLivechatMessage(visitorToken: string, botUsername: string, message?: string, attachments?: Array<IMessageAttachment>): Promise<void> {
-        throw new Error('Method not implemented.');
+    public async onLivechatMessage(visitorToken: string, botUsername: string, message?: string): Promise<void> {
+        // valida que o bot é um bot válido
+        const callbackUrl = await this.getBotCallback(botUsername);
+        if (!callbackUrl) {
+            return;
+        }
+
+        await this.chatWebhook.onLivechatMessage(callbackUrl, visitorToken, message);
+    }
+
+    private async getBotCallback(botUsername: string) {
+        return await this.appPersis.getCallbackUrl(botUsername);
     }
 
 }

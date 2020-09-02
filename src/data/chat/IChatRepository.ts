@@ -8,6 +8,6 @@ export default interface IChatRepository {
 
     onDirectMessage(userUsername: string, botUsername: string, message?: string, attachments?: Array<IMessageAttachment>): Promise<void>;
 
-    onLivechatMessage(visitorToken: string, botUsername: string, message?: string, attachments?: Array<IMessageAttachment>): Promise<void>;
+    onLivechatMessage(visitorToken: string, botUsername: string, message?: string): Promise<void>;
 
 }
