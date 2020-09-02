@@ -36,7 +36,7 @@ export default class ChatRepositoryImpl implements IChatRepository {
         } else if (type === 'livechat') {
             const visitor = await this.internalDataSource.getVisitorByToken(userIdentifier);
             if (!visitor) {
-                throw new AppError(`Could not find visitor`, HttpStatusCode.NOT_FOUND);
+                throw new AppError(`Could not find visitor with token: ${userIdentifier}`, HttpStatusCode.NOT_FOUND);
             }
 
             return await this.internalDataSource.sendLivechatMessage(botUser, visitor, text);
