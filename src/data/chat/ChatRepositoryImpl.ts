@@ -23,7 +23,7 @@ export default class ChatRepositoryImpl implements IChatRepository {
             throw new AppError(`Could not find bot with username ${botUsername}`, HttpStatusCode.NOT_FOUND);
         }
         // userIdentifier will be username if type === `direct` or token if type === `livechat`
-        if (userUrn.indexOf(':') !== -1) {
+        if (userUrn.indexOf(':') === -1) {
             throw new AppError(`Invalid user identification: ${userUrn}`, HttpStatusCode.BAD_REQUEST);
         }
         const [type, userIdentifier] = [userUrn.substring(0, userUrn.indexOf(':')), userUrn.substring(userUrn.indexOf(':') + 1)];
