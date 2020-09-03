@@ -4,7 +4,7 @@ import { IMessageAttachment } from '@rocket.chat/apps-engine/definition/messages
 import { IRoom, RoomType } from '@rocket.chat/apps-engine/definition/rooms';
 import { IUser } from '@rocket.chat/apps-engine/definition/users';
 
-import IChatInternalDataSource from '../../data/rocket/IChatInternalDataSource';
+import IChatInternalDataSource from '../../data/chat/IChatInternalDataSource';
 import AppError from '../../domain/AppError';
 import IAttachment from '../../domain/Attachment';
 

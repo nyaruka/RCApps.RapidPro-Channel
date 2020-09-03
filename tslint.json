@@ -25,6 +25,9 @@
         "no-unused-expression": [
             true,
             "allow-fast-null-checks"
+        ],
+        "no-string-literal": [
+            false
         ]
     }
 }

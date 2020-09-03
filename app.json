@@ -8,8 +8,8 @@
         "homepage": "https://github.com/Ilhasoft/",
         "support": "https://github.com/Ilhasoft/"
     },
-    "name": "RapidPro Integration",
-    "nameSlug": "rapidprointegration",
-    "classFile": "RapidProIntegrationApp.ts",
+    "name": "RapidPro Channel Integration",
+    "nameSlug": "rapidpro-channel",
+    "classFile": "RapidProApp.ts",
     "description": "Integration between RapidPro and Rocket.Chat"
 }
