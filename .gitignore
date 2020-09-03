@@ -26,3 +26,6 @@ out/
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# nyc files
+.nyc_output
