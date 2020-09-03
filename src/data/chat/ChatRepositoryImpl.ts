@@ -23,7 +23,7 @@ export default class ChatRepositoryImpl implements IChatRepository {
             throw new AppError(`Could not find bot with username ${botUsername}`, HttpStatusCode.NOT_FOUND);
         }
         // userIdentifier will be username if type === `direct` or token if type === `livechat`
-        if (userUrn.indexOf(':') !== -1) {
+        if (userUrn.indexOf(':') === -1) {
             throw new AppError(`Invalid user identification: ${userUrn}`, HttpStatusCode.BAD_REQUEST);
         }
         const [type, userIdentifier] = [userUrn.substring(0, userUrn.indexOf(':')), userUrn.substring(userUrn.indexOf(':') + 1)];
@@ -36,7 +36,7 @@ export default class ChatRepositoryImpl implements IChatRepository {
         } else if (type === 'livechat') {
             const visitor = await this.internalDataSource.getVisitorByToken(userIdentifier);
             if (!visitor) {
-                throw new AppError(`Could not find visitor`, HttpStatusCode.NOT_FOUND);
+                throw new AppError(`Could not find visitor with token: ${userIdentifier}`, HttpStatusCode.NOT_FOUND);
             }
 
             return await this.internalDataSource.sendLivechatMessage(botUser, visitor, text);
