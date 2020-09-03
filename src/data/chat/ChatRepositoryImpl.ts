@@ -46,7 +46,6 @@ export default class ChatRepositoryImpl implements IChatRepository {
     }
 
     public async onDirectMessage(userUsername: string, botUsername: string, message?: string, attachments?: Array<IMessageAttachment>): Promise<void> {
-        // valida que o bot é um bot válido
         const callbackUrl = await this.getBotCallback(botUsername);
         if (!callbackUrl) {
             return;
@@ -55,7 +54,6 @@ export default class ChatRepositoryImpl implements IChatRepository {
         await this.chatWebhook.onDirectMessage(callbackUrl, userUsername, message, attachments);
     }
     public async onLivechatMessage(visitorToken: string, botUsername: string, message?: string): Promise<void> {
-        // valida que o bot é um bot válido
         const callbackUrl = await this.getBotCallback(botUsername);
         if (!callbackUrl) {
             return;

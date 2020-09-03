@@ -64,9 +64,13 @@ export class RapidProIntegrationApp extends App implements IPostMessageSent {
         if (message.room.type === RoomType.LIVE_CHAT) {
             await chatRepo.onLivechatMessage(message.room['visitor'].token, message.room['servedBy'].username, message.text);
         } else if (message.room.type === RoomType.DIRECT_MESSAGE) {
+
+            if (message.room['_unmappedProperties_'].usernames.length > 2) {
+                return;
+            }
             // since this is a direct chat, there's always only two users, then we remove the sender and get the other one to check if is a valid bot
             const directUsers = message.room['_unmappedProperties_'].usernames;
-            const botUsername = directUsers.filter( (value, index, arr) => {
+            const botUsername = directUsers.filter((value, index, arr) => {
                 return value !== message.sender.username;
             })[0];
             await chatRepo.onDirectMessage(message.sender.username, botUsername, message.text, message.attachments);

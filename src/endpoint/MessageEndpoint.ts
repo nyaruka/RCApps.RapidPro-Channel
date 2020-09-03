@@ -43,7 +43,6 @@ export class MessageEndpoint extends ApiEndpoint {
         persis: IPersistence,
     ): Promise<IApiResponseJSON> {
 
-        // verifica o token de autenticação
         await RequestHeadersValidator.validate(read, request.headers);
         await RequestBodyValidator.validate(this.bodyConstraints, request.content);
 
