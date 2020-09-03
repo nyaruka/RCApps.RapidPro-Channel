@@ -47,15 +47,13 @@ export class SettingsEndpoint extends ApiEndpoint {
         persis: IPersistence,
     ): Promise<IApiResponseJSON> {
 
-        // verifica o token de autenticação
         await RequestHeadersValidator.validate(read, request.headers);
         await RequestBodyValidator.validate(this.bodyConstraints, request.content);
 
-        // salva a url de callback do rapidpro na persistencia
         const appDataSource: IAppDataSource = new AppPersistence(read.getPersistenceReader(), persis);
         await appDataSource.setCallbackUrl(request.content.webhook.url, request.content.bot.username);
 
-        return this.json({status: HttpStatusCode.NO_CONTENT});
+        return this.json({ status: HttpStatusCode.NO_CONTENT });
     }
 
 }
