@@ -1,0 +1,4 @@
+{
+    "config_app_secret": "App Secret",
+    "config_request_timeout": "Request Timeout"
+}
