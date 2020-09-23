@@ -50,6 +50,13 @@ export class SettingsEndpoint extends ApiEndpoint {
         await RequestHeadersValidator.validate(read, request.headers);
         await RequestBodyValidator.validate(this.bodyConstraints, request.content);
 
+        const botUsername =  request.content.bot.username;
+        const botUser = await read.getUserReader().getByUsername(botUsername);
+
+        if (!botUser || !botUser.isEnabled || !botUser.roles.includes('livechat-agent') || !botUser.roles.includes('bot')) {
+            return this.json({ status: HttpStatusCode.CONFLICT , content: {error: 'Bot is misconfigured or non existent'}});
+        }
+
         const appDataSource: IAppDataSource = new AppPersistence(read.getPersistenceReader(), persis);
         await appDataSource.setCallbackUrl(request.content.webhook.url, request.content.bot.username);
 
