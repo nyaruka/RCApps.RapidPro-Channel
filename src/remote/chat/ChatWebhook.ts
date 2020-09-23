@@ -1,4 +1,4 @@
-import { IHttp, IPersistence, IRead } from '@rocket.chat/apps-engine/definition/accessors';
+import { IHttp, IRead } from '@rocket.chat/apps-engine/definition/accessors';
 import { IMessageAttachment } from '@rocket.chat/apps-engine/definition/messages';
 
 import IChatWebhook from '../../data/chat/IChatWebhook';
@@ -11,21 +11,26 @@ export default class ChatWebhook implements IChatWebhook {
     constructor(
         private readonly read: IRead,
         private readonly http: IHttp,
-        private readonly persistence: IPersistence,
         private readonly secret: string,
     ) { }
 
-    public async onDirectMessage(callbackUrl: string, userUsername: string, message?: string, attachments?: Array<IMessageAttachment>): Promise<void> {
+    public async onDirectMessage(
+        callbackUrl: string,
+        userUsername: string,
+        userName: string,
+        message?: string,
+        attachments?: Array<IMessageAttachment>,
+    ): Promise<void> {
+
         const reqOptions = this.requestOptions();
-        reqOptions['data'] = await this.createPayload(ChatType.DIRECT, userUsername, message, attachments);
+        reqOptions['data'] = await this.createPayload(ChatType.DIRECT, userUsername, userUsername, userName, message, attachments);
 
         await this.http.post(callbackUrl, reqOptions);
     }
 
-    public async onLivechatMessage(callbackUrl: string, visitorToken: string, message?: string): Promise<void> {
+    public async onLivechatMessage(callbackUrl: string, visitorToken: string, userUsername: string, userName: string, message?: string): Promise<void> {
         const reqOptions = this.requestOptions();
-        reqOptions['data'] = await this.createPayload(ChatType.LIVECHAT, visitorToken, message);
-
+        reqOptions['data'] = await this.createPayload(ChatType.LIVECHAT, visitorToken, userUsername, userName, message);
         await this.http.post(callbackUrl, reqOptions);
     }
 
@@ -50,9 +55,21 @@ export default class ChatWebhook implements IChatWebhook {
         return attachmentsPayload;
     }
 
-    private async createPayload(type: ChatType, userUrn: string, message?: string, attachments?: Array<IMessageAttachment>) {
+    private async createPayload(
+        type: ChatType,
+        userUrn: string,
+        userUsername: string,
+        userName: string,
+        message?: string,
+        attachments?: Array<IMessageAttachment>,
+    ) {
+
         const payload = {
-            user: `${type}:${userUrn}`,
+            user: {
+                urn: `${type}:${userUrn}`,
+                username: userUsername,
+                full_name: userName,
+            },
         };
 
         message && (payload['text'] = message);

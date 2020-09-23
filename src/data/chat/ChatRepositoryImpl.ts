@@ -45,21 +45,28 @@ export default class ChatRepositoryImpl implements IChatRepository {
         }
     }
 
-    public async onDirectMessage(userUsername: string, botUsername: string, message?: string, attachments?: Array<IMessageAttachment>): Promise<void> {
+    public async onDirectMessage(
+        userUsername: string,
+        botUsername: string,
+        userName: string,
+        message?: string,
+        attachments?: Array<IMessageAttachment>,
+    ): Promise<void> {
+
         const callbackUrl = await this.getBotCallback(botUsername);
         if (!callbackUrl) {
             return;
         }
 
-        await this.chatWebhook.onDirectMessage(callbackUrl, userUsername, message, attachments);
+        await this.chatWebhook.onDirectMessage(callbackUrl, userUsername, userName, message, attachments);
     }
-    public async onLivechatMessage(visitorToken: string, botUsername: string, message?: string): Promise<void> {
+    public async onLivechatMessage(visitorToken: string, botUsername: string, userName: string, userUsername: string, message?: string): Promise<void> {
         const callbackUrl = await this.getBotCallback(botUsername);
         if (!callbackUrl) {
             return;
         }
 
-        await this.chatWebhook.onLivechatMessage(callbackUrl, visitorToken, message);
+        await this.chatWebhook.onLivechatMessage(callbackUrl, visitorToken, userUsername, userName, message);
     }
 
     private async getBotCallback(botUsername: string) {

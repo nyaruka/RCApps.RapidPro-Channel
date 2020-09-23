@@ -13,8 +13,8 @@ export default class InstanceHelper {
         return new ChatAppsEngine(read, modify);
     }
 
-    public static async newDefaultChatWebhook(http: IHttp, read: IRead, persistence: IPersistence): Promise<IChatWebhook> {
-        return new ChatWebhook(read, http, persistence, '');
+    public static async newDefaultChatWebhook(http: IHttp, read: IRead, secret: string): Promise<IChatWebhook> {
+        return new ChatWebhook(read, http, secret);
     }
 
     public static async newDefaultAppPersistence(read: IPersistenceRead, persis: IPersistence): Promise<IAppDataSource> {
