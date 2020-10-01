@@ -56,7 +56,7 @@ export class MessageEndpoint extends ApiEndpoint {
         );
 
         const content = request.content;
-        const msgId = await chatRepo.sendMessage(content.bot, content.user, content.text, content.attachments);
+        const msgId = await chatRepo.sendMessage(content.user, content.bot, content.text, content.attachments);
 
         return this.json({ status: HttpStatusCode.CREATED, content: { id: msgId } });
     }
