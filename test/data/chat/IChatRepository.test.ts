@@ -192,42 +192,45 @@ describe('IChatRepository', () => {
         it('should call from app persistence', async () => {
             const userUsername = 'user1';
             const botUsername = 'botName';
+            const userFullName = 'john travolta';
             const message = 'hello';
             const attachments = [];
             const validCallback = 'https://webhook.valid.url.com';
 
             when(mockedPersistence.getCallbackUrl(botUsername)).thenResolve(validCallback);
 
-            await chatRepo.onDirectMessage(userUsername, botUsername, message, attachments);
+            await chatRepo.onDirectMessage(userUsername, botUsername, userFullName, message, attachments);
             verify(mockedPersistence.getCallbackUrl(botUsername)).once();
         });
 
         it('should call webhook due to valid callback url', async () => {
             const userUsername = 'user1';
             const botUsername = 'botName';
+            const userFullName = 'john travolta';
             const message = 'hello';
             const attachments = [];
             const validCallback = 'https://webhook.valid.url.com';
 
             when(mockedPersistence.getCallbackUrl(botUsername)).thenResolve(validCallback);
-            when(mockedWebhook.onDirectMessage(validCallback, userUsername, message, attachments)).thenResolve();
+            when(mockedWebhook.onDirectMessage(validCallback, userUsername, userFullName, message, attachments)).thenResolve();
 
-            await chatRepo.onDirectMessage(userUsername, botUsername, message, attachments);
-            verify(mockedWebhook.onDirectMessage(validCallback, userUsername, message, attachments)).once();
+            await chatRepo.onDirectMessage(userUsername, botUsername, userFullName, message, attachments);
+            verify(mockedWebhook.onDirectMessage(validCallback, userUsername, userFullName, message, attachments)).once();
         });
 
         it('should not call webhook due to invalid callback url', async () => {
             const userUsername = 'user1';
             const botUsername = 'botName';
+            const userFullName = 'john travolta';
             const message = 'hello';
             const attachments = [];
             const validCallback = 'https://webhook.valid.url.com';
 
             when(mockedPersistence.getCallbackUrl(botUsername)).thenResolve(undefined);
-            when(mockedWebhook.onDirectMessage(validCallback, userUsername, message, attachments)).thenResolve();
+            when(mockedWebhook.onDirectMessage(validCallback, userUsername, userFullName, message, attachments)).thenResolve();
 
-            await chatRepo.onDirectMessage(userUsername, botUsername, message, attachments);
-            verify(mockedWebhook.onDirectMessage(validCallback, userUsername, message, attachments)).never();
+            await chatRepo.onDirectMessage(userUsername, botUsername, userFullName, message, attachments);
+            verify(mockedWebhook.onDirectMessage(validCallback, userUsername, userFullName, message, attachments)).never();
         });
 
     });
@@ -247,39 +250,45 @@ describe('IChatRepository', () => {
         it('should call from app persistence', async () => {
             const visitorToken = '1234';
             const botUsername = 'botName';
+            const userFullName = 'john travolta';
+            const userUsername = 'user1';
             const message = 'hello';
             const validCallback = 'https://webhook.valid.url.com';
 
             when(mockedPersistence.getCallbackUrl(botUsername)).thenResolve(validCallback);
 
-            await chatRepo.onLivechatMessage(visitorToken, botUsername, message);
+            await chatRepo.onLivechatMessage(visitorToken, botUsername, userFullName, userUsername, message);
             verify(mockedPersistence.getCallbackUrl(botUsername)).once();
         });
 
         it('should call webhook due to valid callback url', async () => {
             const visitorToken = '1234';
             const botUsername = 'botName';
+            const userFullName = 'john travolta';
+            const userUsername = 'user1';
             const message = 'hello';
             const validCallback = 'https://webhook.valid.url.com';
 
             when(mockedPersistence.getCallbackUrl(botUsername)).thenResolve(validCallback);
-            when(mockedWebhook.onLivechatMessage(validCallback, visitorToken, message)).thenResolve();
+            when(mockedWebhook.onLivechatMessage(validCallback, visitorToken, userUsername, userFullName, message)).thenResolve();
 
-            await chatRepo.onLivechatMessage(visitorToken, botUsername, message);
-            verify(mockedWebhook.onLivechatMessage(validCallback, visitorToken, message)).once();
+            await chatRepo.onLivechatMessage(visitorToken, botUsername, userFullName, userUsername, message);
+            verify(mockedWebhook.onLivechatMessage(validCallback, visitorToken, userUsername, userFullName, message)).once();
         });
 
         it('should not call webhook due to invalid callback url', async () => {
             const visitorToken = '1234';
             const botUsername = 'botName';
+            const userFullName = 'john travolta';
+            const userUsername = 'user1';
             const message = 'hello';
             const validCallback = 'https://webhook.valid.url.com';
 
             when(mockedPersistence.getCallbackUrl(botUsername)).thenResolve(undefined);
-            when(mockedWebhook.onLivechatMessage(validCallback, visitorToken, message)).thenResolve();
+            when(mockedWebhook.onLivechatMessage(validCallback, visitorToken, userUsername, userFullName, message)).thenResolve();
 
-            await chatRepo.onLivechatMessage(visitorToken, botUsername, message);
-            verify(mockedWebhook.onLivechatMessage(validCallback, visitorToken, message)).never();
+            await chatRepo.onLivechatMessage(visitorToken, botUsername, userFullName, userUsername, message);
+            verify(mockedWebhook.onLivechatMessage(validCallback, visitorToken, userUsername, userFullName, message)).never();
         });
 
     });
