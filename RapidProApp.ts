@@ -64,6 +64,11 @@ export class RapidProIntegrationApp extends App implements IPostMessageSent {
             await InstanceHelper.newDefaultAppPersistence(read.getPersistenceReader(), persistence),
         );
 
+        // empty message handle
+        if (!message.attachments && !message.text) {
+            return;
+        }
+
         if (message.room.type === RoomType.LIVE_CHAT) {
             const room = message.room as ILivechatRoom;
 
