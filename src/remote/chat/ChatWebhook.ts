@@ -17,20 +17,20 @@ export default class ChatWebhook implements IChatWebhook {
     public async onDirectMessage(
         callbackUrl: string,
         userUsername: string,
-        userName: string,
+        userFullName: string,
         message?: string,
         attachments?: Array<IMessageAttachment>,
     ): Promise<void> {
 
         const reqOptions = this.requestOptions();
-        reqOptions['data'] = await this.createPayload(ChatType.DIRECT, userUsername, userUsername, userName, message, attachments);
+        reqOptions['data'] = await this.createPayload(ChatType.DIRECT, userUsername, userUsername, userFullName, message, attachments);
 
         await this.http.post(callbackUrl, reqOptions);
     }
 
-    public async onLivechatMessage(callbackUrl: string, visitorToken: string, userUsername: string, userName: string, message?: string): Promise<void> {
+    public async onLivechatMessage(callbackUrl: string, visitorToken: string, userUsername: string, userFullName: string, message?: string): Promise<void> {
         const reqOptions = this.requestOptions();
-        reqOptions['data'] = await this.createPayload(ChatType.LIVECHAT, visitorToken, userUsername, userName, message);
+        reqOptions['data'] = await this.createPayload(ChatType.LIVECHAT, visitorToken, userUsername, userFullName, message);
         await this.http.post(callbackUrl, reqOptions);
     }
 
@@ -59,7 +59,7 @@ export default class ChatWebhook implements IChatWebhook {
         type: ChatType,
         userUrn: string,
         userUsername: string,
-        userName: string,
+        userFullName: string,
         message?: string,
         attachments?: Array<IMessageAttachment>,
     ) {
@@ -68,7 +68,7 @@ export default class ChatWebhook implements IChatWebhook {
             user: {
                 urn: `${type}:${userUrn}`,
                 username: userUsername,
-                full_name: userName,
+                full_name: userFullName,
             },
         };
 

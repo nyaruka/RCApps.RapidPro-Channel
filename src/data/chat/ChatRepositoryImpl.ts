@@ -48,7 +48,7 @@ export default class ChatRepositoryImpl implements IChatRepository {
     public async onDirectMessage(
         userUsername: string,
         botUsername: string,
-        userName: string,
+        userFullName: string,
         message?: string,
         attachments?: Array<IMessageAttachment>,
     ): Promise<void> {
@@ -58,15 +58,15 @@ export default class ChatRepositoryImpl implements IChatRepository {
             return;
         }
 
-        await this.chatWebhook.onDirectMessage(callbackUrl, userUsername, userName, message, attachments);
+        await this.chatWebhook.onDirectMessage(callbackUrl, userUsername, userFullName, message, attachments);
     }
-    public async onLivechatMessage(visitorToken: string, botUsername: string, userName: string, userUsername: string, message?: string): Promise<void> {
+    public async onLivechatMessage(visitorToken: string, botUsername: string, userFullName: string, userUsername: string, message?: string): Promise<void> {
         const callbackUrl = await this.getBotCallback(botUsername);
         if (!callbackUrl) {
             return;
         }
 
-        await this.chatWebhook.onLivechatMessage(callbackUrl, visitorToken, userUsername, userName, message);
+        await this.chatWebhook.onLivechatMessage(callbackUrl, visitorToken, userUsername, userFullName, message);
     }
 
     private async getBotCallback(botUsername: string) {

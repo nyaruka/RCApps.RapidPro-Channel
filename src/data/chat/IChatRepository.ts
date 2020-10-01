@@ -6,8 +6,8 @@ export default interface IChatRepository {
 
     sendMessage(userUrn: string, botUsername: string, text?: string, attachments?: Array<IAttachment>): Promise<string>;
 
-    onDirectMessage(userUsername: string, botUsername: string, userName: string, message?: string, attachments?: Array<IMessageAttachment>): Promise<void>;
+    onDirectMessage(userUsername: string, botUsername: string, userFullName: string, message?: string, attachments?: Array<IMessageAttachment>): Promise<void>;
 
-    onLivechatMessage(visitorToken: string, botUsername: string, userName: string, userUsername: string, message?: string): Promise<void>;
+    onLivechatMessage(visitorToken: string, botUsername: string, userFullName: string, userUsername: string, message?: string): Promise<void>;
 
 }
