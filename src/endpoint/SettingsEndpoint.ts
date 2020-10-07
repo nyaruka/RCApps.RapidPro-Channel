@@ -53,7 +53,8 @@ export class SettingsEndpoint extends ApiEndpoint {
         const botUsername =  request.content.bot.username;
         const botUser = await read.getUserReader().getByUsername(botUsername);
 
-        if (!botUser || !botUser.isEnabled || !botUser.roles.includes('livechat-agent') || !botUser.roles.includes('bot')) {
+        if (!botUser || !botUser.isEnabled || !botUser.roles.includes('bot')) {
+            this.app.getLogger().error('Bot is misconfigured or non existent');
             return this.json({ status: HttpStatusCode.CONFLICT , content: {error: 'Bot is misconfigured or non existent'}});
         }
 
