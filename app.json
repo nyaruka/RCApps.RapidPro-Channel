@@ -8,7 +8,7 @@
         "homepage": "https://github.com/Ilhasoft/",
         "support": "https://github.com/Ilhasoft/"
     },
-    "name": "RapidPro Channel Integration",
+    "name": "RapidPro Channel",
     "nameSlug": "rapidpro-channel",
     "classFile": "RapidProApp.ts",
     "description": "Integration between RapidPro and Rocket.Chat"
