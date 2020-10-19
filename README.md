@@ -48,7 +48,7 @@ Refer to this [guide](https://docs.rocket.chat/apps-development/getting-started)
 
 3. Create e bot on Rocket.Chat and give it the `livechat-agent` role, insert the Rocket.Chat Bot username on the channel setup on RapidPro.
 
-3. To get the required `Auth Token` and `User Id` go to `Profile` > `My account` > `Personal Access Tokens` > `Generate a token without 2FA`, save the tokens as it will not be displayed again once the pop-up is closed.
+4. To get the required `Auth Token` and `User Id` go to `Profile` > `My account` > `Personal Access Tokens` > `Generate a token without 2FA`, save the tokens as it will not be displayed again once the pop-up is closed.
 
 ## API Reference
 
