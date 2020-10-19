@@ -28,9 +28,16 @@ export default class ChatWebhook implements IChatWebhook {
         await this.http.post(callbackUrl, reqOptions);
     }
 
-    public async onLivechatMessage(callbackUrl: string, visitorToken: string, userUsername: string, userFullName: string, message?: string): Promise<void> {
+    public async onLivechatMessage(
+        callbackUrl: string,
+        visitorToken: string,
+        userUsername: string,
+        userFullName: string,
+        message?: string,
+        attachments?: Array<IMessageAttachment>,
+    ): Promise<void> {
         const reqOptions = this.requestOptions();
-        reqOptions['data'] = await this.createPayload(ChatType.LIVECHAT, visitorToken, userUsername, userFullName, message);
+        reqOptions['data'] = await this.createPayload(ChatType.LIVECHAT, visitorToken, userUsername, userFullName, message, attachments);
         await this.http.post(callbackUrl, reqOptions);
     }
 

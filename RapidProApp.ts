@@ -73,11 +73,17 @@ export class RapidProIntegrationApp extends App implements IPostMessageSent {
             const room = message.room as ILivechatRoom;
 
             // user is still on queue and doesnt have an configured agent yet
-            if (!room.servedBy) {
+            if (!room.servedBy || (message.sender.roles && message.sender.roles.includes('livechat-agent'))) {
                 return;
             }
 
-            await chatRepo.onLivechatMessage(room.visitor.token, room.servedBy.username, room.visitor.name, room.visitor.username, message.text);
+            await chatRepo.onLivechatMessage(
+                room.visitor.token,
+                room.servedBy.username,
+                room.visitor.name,
+                room.visitor.username,
+                message.text,
+                message.attachments);
         } else if (message.room.type === RoomType.DIRECT_MESSAGE) {
             const room = message.room;
             if (room['_unmappedProperties_'].usernames.length > 2) {
