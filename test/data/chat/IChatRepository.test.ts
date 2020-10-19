@@ -254,10 +254,11 @@ describe('IChatRepository', () => {
             const userUsername = 'user1';
             const message = 'hello';
             const validCallback = 'https://webhook.valid.url.com';
+            const attachments = [];
 
             when(mockedPersistence.getCallbackUrl(botUsername)).thenResolve(validCallback);
 
-            await chatRepo.onLivechatMessage(visitorToken, botUsername, userFullName, userUsername, message);
+            await chatRepo.onLivechatMessage(visitorToken, botUsername, userFullName, userUsername, message, attachments);
             verify(mockedPersistence.getCallbackUrl(botUsername)).once();
         });
 
@@ -268,12 +269,13 @@ describe('IChatRepository', () => {
             const userUsername = 'user1';
             const message = 'hello';
             const validCallback = 'https://webhook.valid.url.com';
+            const attachments = [];
 
             when(mockedPersistence.getCallbackUrl(botUsername)).thenResolve(validCallback);
-            when(mockedWebhook.onLivechatMessage(validCallback, visitorToken, userUsername, userFullName, message)).thenResolve();
+            when(mockedWebhook.onLivechatMessage(validCallback, visitorToken, userUsername, userFullName, message, attachments)).thenResolve();
 
-            await chatRepo.onLivechatMessage(visitorToken, botUsername, userFullName, userUsername, message);
-            verify(mockedWebhook.onLivechatMessage(validCallback, visitorToken, userUsername, userFullName, message)).once();
+            await chatRepo.onLivechatMessage(visitorToken, botUsername, userFullName, userUsername, message, attachments);
+            verify(mockedWebhook.onLivechatMessage(validCallback, visitorToken, userUsername, userFullName, message, attachments)).once();
         });
 
         it('should not call webhook due to invalid callback url', async () => {
@@ -283,12 +285,13 @@ describe('IChatRepository', () => {
             const userUsername = 'user1';
             const message = 'hello';
             const validCallback = 'https://webhook.valid.url.com';
+            const attachments = [];
 
             when(mockedPersistence.getCallbackUrl(botUsername)).thenResolve(undefined);
-            when(mockedWebhook.onLivechatMessage(validCallback, visitorToken, userUsername, userFullName, message)).thenResolve();
+            when(mockedWebhook.onLivechatMessage(validCallback, visitorToken, userUsername, userFullName, message, attachments)).thenResolve();
 
-            await chatRepo.onLivechatMessage(visitorToken, botUsername, userFullName, userUsername, message);
-            verify(mockedWebhook.onLivechatMessage(validCallback, visitorToken, userUsername, userFullName, message)).never();
+            await chatRepo.onLivechatMessage(visitorToken, botUsername, userFullName, userUsername, message, attachments);
+            verify(mockedWebhook.onLivechatMessage(validCallback, visitorToken, userUsername, userFullName, message, attachments)).never();
         });
 
     });
