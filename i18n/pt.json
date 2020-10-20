@@ -1,0 +1,4 @@
+{
+    "config_app_secret": "Segredo do App",
+    "config_request_timeout": "Tempo de Espera de Requisição"
+}
