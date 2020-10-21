@@ -90,7 +90,7 @@ Error responses are returned in this pattern:
     - Sets the given settings on app.
 - Payload:
     ```json
-        {
+    {
         "webhook": {
             "url": "https://<host>/mr/tickets/types/rocketchat/event_callback/<UUID>"
         },
