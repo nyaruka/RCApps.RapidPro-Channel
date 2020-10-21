@@ -26,17 +26,27 @@ To install manually on your Rocket.Chat instance you first need to enable the in
     npm install
 ```
 
-3. Deploy the App:
+3. Give your branding to the Application:
+
+```bash
+    npm run build
+```
+
+- Then the CLI will prompt you to insert some info about your App's branding settings
+
+4. Deploy the App to an specific Rocket.Chat instance:
+
+```bash
+    rc-apps deploy --url <your-rocket-url> --username <your-admin-username> --password <your-admin-password>
+```
+- If deploying to an specific Rocket.Chat intance, make sure to enable `Development Mode` on `Administration > General > Apps > Enable Development Mode`.
+
+5. To publish the App on the Rocket.Chat Marketplace, run the following command:
 
 ```bash
     npm run publish
 ```
-
-- Then the CLI will prompt you to insert:
-    - `Info about your App's branding settings`
-    - `Server's URL`: Is your Rocket.Chat instance URL (if running Rocket.Chat locally,  insert `localhost:<PORT>`)
-    - `username`: Is the username of the Rocket.Chat admin
-    - `password`: Is the password of the Rocket.Chat admin
+- Answer the questions requested to publish the App on the Rocket.Chat marketplace.
 
 Refer to this [guide](https://docs.rocket.chat/apps-development/getting-started) if you need more info.
 
@@ -76,15 +86,16 @@ Error responses are returned in this pattern:
     - Sets the given settings on app.
 - Payload:
     ```json
-    {
-    "webhook": {
-        "url": "https://<host>/mr/tickets/types/rocketchat/event_callback/<UUID>"
-    },
-    "bot": {
-        "username": "bot.username",
+        {
+        "webhook": {
+            "url": "https://<host>/mr/tickets/types/rocketchat/event_callback/<UUID>"
+        },
+        "bot": {
+            "username": "bot.username",
+        }
     }
-}
     ```
+
 - Result:
     - Status: `204 No Content`
 

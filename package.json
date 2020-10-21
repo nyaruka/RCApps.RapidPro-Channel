@@ -24,6 +24,7 @@
     "scripts": {
         "test-dev": "mocha -r ts-node/register test/**/*.test.ts; exit 0",
         "coverage": "nyc npm run test-dev",
-        "publish": "node ./scripts/branding.js && rc-apps package && rc-apps submit"
+        "publish": "rc-apps package && rc-apps submit",
+        "build": "node ./scripts/branding.js; exit 0"
     }
 }
