@@ -17,7 +17,7 @@ To install manually on your Rocket.Chat instance you first need to enable the in
 
 ```bash
     git clone https://github.com/Ilhasoft/RCApps.RapidPro-Channel.git
-    cd Rocket.Chat.App-Tickets
+    cd RCApps.RapidPro-Channel
 ```
 
 2. Install the required packages:
@@ -54,7 +54,11 @@ Refer to this [guide](https://docs.rocket.chat/apps-development/getting-started)
 
 1. With the app installed, and with the `secret` provided on the Rocket.Chat channel service integration on RapidPro, go to `Administration > Apps > this app`, and paste the `secret` on the `App's Secret` field, then click `Save Changes`.
 
-3. Return to RapidPro, and proceed with the integration setup after setting the `App's Secret` field. This will automatically validate the integration between the app and RapidPro.
+2. Return to RapidPro, and proceed with the integration setup after setting the `App's Secret` field. This will automatically validate the integration between the app and RapidPro.
+
+3. Create e bot on Rocket.Chat and give it the `livechat-agent` role, insert the Rocket.Chat Bot username on the channel setup on RapidPro.
+
+4. To get the required `Auth Token` and `User Id` go to `Profile` > `My account` > `Personal Access Tokens` > `Generate a token without 2FA`, save the tokens as it will not be displayed again once the pop-up is closed.
 
 ## API Reference
 
