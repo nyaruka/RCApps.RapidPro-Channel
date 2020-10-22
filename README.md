@@ -11,8 +11,6 @@ Rapidpro-Channel is a [Rocket.Chat](https://github.com/RocketChat/Rocket.Chat) a
 - [Node](https://nodejs.org/en/download/)
 - [RC-Apps](https://docs.rocket.chat/apps-development/getting-started#rocket-chat-app-engine-cli)
 
-To install manually on your Rocket.Chat instance you first need to enable the installation of apps in development mode at `Administration > General > Apps > Enable development mode`.
-
 1. Clone the repository and change directory:
 
 ```bash
@@ -39,7 +37,7 @@ To install manually on your Rocket.Chat instance you first need to enable the in
 ```bash
     rc-apps deploy --url <your-rocket-url> --username <your-admin-username> --password <your-admin-password>
 ```
-- If deploying to an specific Rocket.Chat intance, make sure to enable `Development Mode` on `Administration > General > Apps > Enable Development Mode`.
+- If deploying to an specific Rocket.Chat instance, make sure to enable `Development Mode` on `Administration > General > Apps > Enable Development Mode`.
 
 5. To publish the App on the Rocket.Chat Marketplace, run the following command:
 
@@ -50,26 +48,26 @@ To install manually on your Rocket.Chat instance you first need to enable the in
 
 Refer to this [guide](https://docs.rocket.chat/apps-development/getting-started) if you need more info.
 
-## App Setup
+## Integration Setup
 
-1. With the app installed, and with the `secret` provided on the Rocket.Chat channel service integration on RapidPro, go to `Administration > Apps > this app`, and paste the `secret` on the `App's Secret` field, then click `Save Changes`.
+1. With the app installed, and with the `secret` provided on the Rocket.Chat claim page in RapidPro, go to `Administration > Apps > this app`, and paste the `secret` on the `App's Secret` field, then click `Save Changes`.
 
 2. Return to RapidPro, and proceed with the integration setup after setting the `App's Secret` field. This will automatically validate the integration between the app and RapidPro.
 
-3. Create e bot on Rocket.Chat and give it the `livechat-agent` role, insert the Rocket.Chat Bot username on the channel setup on RapidPro.
+3. Create a bot on Rocket.Chat and give it the `livechat-agent` role, so insert the bot username on the channel setup on RapidPro.
 
 4. To get the required `Auth Token` and `User Id` go to `Profile` > `My account` > `Personal Access Tokens` > `Generate a token without 2FA`, save the tokens as it will not be displayed again once the pop-up is closed.
 
 ## API Reference
 
-The following headers are required in for all incoming requests to ensure the requests being made from the intended rapidpro integration.
+The following headers are required in for all incoming requests to ensure the requests being made from the intended RapidPro integration.
 
-```json
+```
 Content-Type:  application/json
 Authorization: Token LHHKXX8ZMJTVUFAHSW2J5P6FSF4SCQRK
 ```
 
-Error responses are returned in this pattern:
+Error responses body returned in this pattern:
 
 ```json
 {
@@ -81,7 +79,7 @@ Error responses are returned in this pattern:
 
 - Description:
     - Match the given secret from `Authorization` header with the App's `App Secret` field.
-- Result:
+- Success result:
     - Status: `204 No-Content`
 
 ### PUT /settings
@@ -92,56 +90,48 @@ Error responses are returned in this pattern:
     ```json
     {
         "webhook": {
-            "url": "https://<host>/mr/tickets/types/rocketchat/event_callback/<UUID>"
+            "url": "https://<host>/c/rc/<UUID>/receive"
         },
         "bot": {
-            "username": "bot.username",
+            "username": "rocket.cat",
         }
     }
     ```
 
-- Result:
+- Success result:
     - Status: `204 No Content`
 
 ### POST /message
 
 - Description:
-    - Send a massage to the specified user
+    - Send a message to the specified user
 - Payload:
     ```json
     {
-        "userURN":     "direct:john.doe" | "livechat:token123xyz",
-        "botUsername": "bot.username",
+        "userURN":     "direct:john.doe",
+        "botUsername": "rocket.cat",
         "text":        "Hi! How are you?",
         "attachments": [
             {
-                "type": "image",            
+                "type": "image/png",  
                 "url":  "https://link.to/attachment1.png",
             },
             {
-                "type": "audio",            
-                "url":  "https://link.to/attachment2.mp3",
-            },
-            {
-                "type": "video",            
-                "url":  "https://link.to/attachment3.mp4",
-            },
-            {
-                "type": "document",            
+                "type": "application/pdf",            
                 "url":  "https://link.to/attachment1.pdf",
-            },
+            }
         ]
     }
     ```
-- Result:
-    - Status: `201 CREATED`
+- Success result:
+    - Status: `201 Created`
     - Body:
     ```json
     {
         "id": "onrMgdKbpX9Qqtvoi"
     }
     ```
-        
+
 ### Webhooks
 
 There are currently 1 configured webhook on the app.
@@ -150,7 +140,7 @@ The following headers are required in for all webhooks to ensure the requests ar
 
 ```
 Content-Type:  application/json
-Authorization: Token <SECRET GENERATED ON RAPIDPRO>
+Authorization: Token LHHKXX8ZMJTVUFAHSW2J5P6FSF4SCQRK
 ```
 
 **POST <callback_url>**
@@ -162,7 +152,7 @@ Authorization: Token <SECRET GENERATED ON RAPIDPRO>
         ```json
         {
             "user": {
-                "urn": "direct:user.username" | "livechat:visitor.token",
+                "urn": "livechat:onrMgdKbpX9Qqtvoi",
                 "username": "john.doe",
                 "full_name": "John Doe"
             },
@@ -171,19 +161,7 @@ Authorization: Token <SECRET GENERATED ON RAPIDPRO>
                 {
                     "type": "image",            
                     "url":  "https://link.to/attachment1.png",
-                },
-                {
-                    "type": "audio",            
-                    "url":  "https://link.to/attachment2.mp3",
-                },
-                {
-                    "type": "video",            
-                    "url":  "https://link.to/attachment3.mp4",
-                },
-                {
-                    "type": "document",            
-                    "url":  "https://link.to/attachment1.pdf",
-                },
+                }
             ]
         }
         ```
