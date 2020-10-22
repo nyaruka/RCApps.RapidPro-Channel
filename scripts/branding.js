@@ -45,6 +45,5 @@ rl.on("close", function() {
         if (err) throw err;
     });
 
-    console.log("\n Saved modifications in app.json\n Starting deployment on the Rocket.Chat Marketplace");
     process.exit(0);
 });
